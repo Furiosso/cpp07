@@ -132,9 +132,9 @@ int main() {
 	len = 3;
 	std::cout << "Result:   ";
     ::iter(str_ptr_arr, len, ::template_print<std::string*>);
-    std::cout << std::endl << "Expected: " << str_arr << " "
-	<< &str_arr[1] << " "
-	<< &str_arr[2] << std::endl << std::endl;
+    std::cout << std::endl << "Expected: " << str_ptr_arr[0] << " "
+	<< str_ptr_arr[1] << " "
+	<< str_ptr_arr[2] << std::endl << std::endl;
 
     // Test 11: Empty array with print function
     std::cout << "Test 11: Empty array" << std::endl;

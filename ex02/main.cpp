@@ -4,104 +4,106 @@
 
 int main()
 {
-    std::cout << "=== Test 1: Constructor vacío ===" << std::endl;
-    ::Array<int> a1;
-    std::cout << "Tamaño: " << a1.size() << std::endl;  // Esperado: 0
+    std::cout << "=== Test 1: Default constructor ===" << std::endl;
+    Array<int> a1;
+    std::cout << "Size: " << a1.size() << std::endl
+	<< "Expected: 0" << std::endl;
     bool exception_caught = false;
     try {
-        a1[0];  // Debe lanzar std::exception (sin asignar a var)
-    } catch (const std::exception& e) {
+        a1[0];
+    }
+	catch (const std::exception& e)
+	{
         exception_caught = true;
-        std::cout << "OK: Excepción lanzada para índice fuera de rango en array vacío" << std::endl;
+        std::cout << "OK: Exception thrown" << std::endl;
     }
     if (!exception_caught) {
-        std::cout << "ERROR: No se lanzó excepción en array vacío" << std::endl;
+        std::cout << "ERROR: Exception not thrown" << std::endl;
     }
 
-    std::cout << "\n=== Test 2: Constructor con tamaño n (inicialización por defecto) ===" << std::endl;
-    ::Array<int> a2(5);
-    std::cout << "Tamaño: " << a2.size() << std::endl;  // Esperado: 5
-    std::cout << "Primer elemento: " << a2[0] << " (debería ser 0)" << std::endl;
-    std::cout << "Último elemento: " << a2[4] << " (debería ser 0)" << std::endl;
+    std::cout << "\n=== Test 2: Parametrized constructor ===" << std::endl;
+    Array<int> a2(5);
+    std::cout << "Size: " << a2.size() << std::endl
+	<< "Expected: 5" << std::endl;
+    std::cout << "First element: " << a2[0] << " | Expected: 0" << std::endl;
+    std::cout << "Last element: " << a2[4] << " | Expected: 0" << std::endl;
     exception_caught = false;
     try {
-        a2[5];  // Fuera de rango (sin var)
+        a2[5];
     } catch (const std::exception& e) {
         exception_caught = true;
-        std::cout << "OK: Excepción lanzada para índice 5" << std::endl;
+        std::cout << "OK: Exception thrown" << std::endl;
     }
     if (!exception_caught) {
-        std::cout << "ERROR: No se lanzó excepción para índice fuera de rango" << std::endl;
+        std::cout << "ERROR: Exception thrown" << std::endl;
     }
     try {
-        a2[10];  // Muy fuera
+        a2[10];
     } catch (const std::exception& e) {
-        std::cout << "OK: Excepción para índice muy fuera de rango" << std::endl;
+        std::cout << "OK: Exception thrown" << std::endl;
     }
 
-    std::cout << "\n=== Test 3: Constructor por copia ===" << std::endl;
+    std::cout << "\n=== Test 3: Copy constructor ===" << std::endl;
     Array<int> a3 = a2;  // Copia
-    std::cout << "Tamaño a2: " << a2.size() << ", Tamaño a3: " << a3.size() << std::endl;  // Ambos 5
+    std::cout << "Size a2: " << a2.size() << ", Size a3: " << a3.size() << std::endl
+	<< "Expected: 5 for both" << std::endl;
     a3[0] = 42;
-    std::cout << "a2[0] después de modificar copia: " << a2[0] << " (no debe ser 42)" << std::endl;
-    std::cout << "a3[0]: " << a3[0] << " (debe ser 42)" << std::endl;
+    std::cout << "a2[0] after copy modification: " << a2[0] << " | Expected: 0" << std::endl;
+    std::cout << "a3[0]: " << a3[0] << " | Expected: 42" << std::endl;
     a2[0] = 10;
-    std::cout << "a3[0] después de modificar original: " << a3[0] << " (no debe ser 10)" << std::endl;
-    std::cout << "a2[0]: " << a2[0] << " (debe ser 10)" << std::endl;
+    std::cout << "a3[0] after modification of original array: " << a3[0] << " | Expected: 42" << std::endl;
+    std::cout << "a2[0]: " << a2[0] << " | Expected: 10" << std::endl;
 
-    std::cout << "\n=== Test 4: Operador de asignación ===" << std::endl;
-    Array<int> a4(3);  // Tamaño diferente
-    a4[0] = 99;  // Modificamos antes
-    a4 = a3;  // Asignación
-    std::cout << "Tamaño a4 después de asignación: " << a4.size() << std::endl;  // Debe ser 5
+    std::cout << "\n=== Test 4: Assignment operator ===" << std::endl;
+    Array<int> a4(3);
+    a4[0] = 99;
+    a4 = a3;
+    std::cout << "Size a4 after asignation: " << a4.size() << std::endl
+	<< "Expected: 5" << std::endl;
     a4[1] = 100;
-    std::cout << "a3[1] después de modificar asignado: " << a3[1] << " (no debe ser 100)" << std::endl;
-    std::cout << "a4[1]: " << a4[1] << " (debe ser 100)" << std::endl;
+    std::cout << "a3[1] after modify assigned array: " << a3[1] << " | Expected: 0" << std::endl;
+    std::cout << "a4[1]: " << a4[1] << " | Expected: 100" << std::endl;
 
-    // Test auto-asignación
     Array<int> a5;
-    a5 = a5;  // No debe crashear
-    std::cout << "Auto-asignación OK (tamaño: " << a5.size() << ")" << std::endl;
+    a5 = a5;
+    std::cout << "Auto-asignation OK .Size: " << a5.size() << " | Expected: 0" << std::endl;
 
-    std::cout << "\n=== Test 5: Con tipo std::string ===" << std::endl;
-    Array<std::string> s1;  // Vacío
-    std::cout << "Tamaño string vacío: " << s1.size() << std::endl;  // 0
-    Array<std::string> s2(2);  // Con tamaño
-    std::cout << "Tamaño string: " << s2.size() << std::endl;  // 2
-    std::cout << "s2[0] por defecto: '" << s2[0] << "' (debe ser vacío)" << std::endl;
-    s2[0] = "Hola";
-    std::cout << "s2[0] asignado: '" << s2[0] << "'" << std::endl;
-    Array<std::string> s3 = s2;  // Copia
-    s3[0] = "Mundo";
-    std::cout << "s2[0] después copia/modif: '" << s2[0] << "' (aún Hola)" << std::endl;
-    std::cout << "s3[0]: '" << s3[0] << "' (Mundo)" << std::endl;
-    s2 = s3;  // Asignación
-    std::cout << "s2[0] después asignación: '" << s2[0] << "' (debe ser Mundo, tamaño " << s2.size() << ")" << std::endl;
+    std::cout << "\n=== Test 5: string ===" << std::endl;
+    Array<std::string> s1;
+    std::cout << "Size default string array: " << s1.size() << " | Expected: 0" << std::endl;
+    Array<std::string> s2(2);
+    std::cout << "Size string array: " << s2.size() << " | Expected: 2" << std::endl;
+    std::cout << "s2[0]: \"" << s2[0] << "\" | Expected: \"\"" << std::endl;
+    s2[0] = "Hello";
+    std::cout << "s2[0] assigned: '" << s2[0] << "'" << " | Expected: Hello" << std::endl;
+    Array<std::string> s3 = s2;
+    s3[0] = "World";
+    std::cout << "s2[0] after copy/modif: '" << s2[0] << "' | Expected: Hello" << std::endl;
+    std::cout << "s3[0]: '" << s3[0] << "' | Expected: World" << std::endl;
+    s2 = s3;
+    std::cout << "s2[0] after asignation: '" << s2[0] << "' | Expected: World. Size: " << s2.size() << std::endl;
     exception_caught = false;
     try {
-        s2[3];  // Fuera de rango (sin var)
+        s2[3];
     } catch (const std::exception& e) {
         exception_caught = true;
-        std::cout << "OK: Excepción string fuera de rango" << std::endl;
+        std::cout << "OK: Exception string out of range" << std::endl;
     }
     if (!exception_caught) {
-        std::cout << "ERROR: No excepción string fuera de rango" << std::endl;
+        std::cout << "ERROR: No exception" << std::endl;
     }
 
-    std::cout << "\n=== Test 6: Array de tamaño 0 con acceso ===" << std::endl;
+    std::cout << "\n=== Test 6: Size 0 array ===" << std::endl;
     Array<double> d1(0);
-    std::cout << "Tamaño double 0: " << d1.size() << std::endl;
+    std::cout << "Size double 0: " << d1.size() << std::endl;
     exception_caught = false;
     try {
-        d1[0];  // Sin var
+        d1[0];
     } catch (const std::exception& e) {
         exception_caught = true;
-        std::cout << "OK: Excepción en array tamaño 0" << std::endl;
+        std::cout << "OK: Exception thrown" << std::endl;
     }
     if (!exception_caught) {
-        std::cout << "ERROR: Acceso a array vacío sin excepción" << std::endl;
+        std::cout << "ERROR: Access to empty array" << std::endl;
     }
-
-    std::cout << "\n=== Todos los tests completados. Si ves solo 'OK' y tamaños correctos, ¡bien!" << std::endl;
-    return 0;
 }
