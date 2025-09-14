@@ -1,6 +1,6 @@
 #include <iostream>
 #include <string>
-#include "Array.hpp"  // Tu implementación aquí
+#include "Array.hpp"
 
 int main()
 {
