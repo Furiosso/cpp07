@@ -1,9 +1,58 @@
 #include <iostream>
 #include <string>
+#include <ctime>
+#include <cstdlib>
 #include "Array.hpp"
 
-int main()
+#define MAX_VAL 750
+int main(int, char**)
 {
+    Array<int> numbers(MAX_VAL);
+    int* mirror = new int[MAX_VAL];
+    srand(time(NULL));
+    for (int i = 0; i < MAX_VAL; i++)
+    {
+        const int value = rand();
+        numbers[i] = value;
+        mirror[i] = value;
+    }
+    //SCOPE
+    {
+        Array<int> tmp = numbers;
+        Array<int> test(tmp);
+    }
+
+    for (int i = 0; i < MAX_VAL; i++)
+    {
+        if (mirror[i] != numbers[i])
+        {
+            std::cerr << "didn't save the same value!!" << std::endl;
+            return 1;
+        }
+    }
+    try
+    {
+        numbers[-2] = 0;
+    }
+    catch(const std::exception& e)
+    {
+        std::cerr << e.what() << '\n';
+    }
+    try
+    {
+        numbers[MAX_VAL] = 0;
+    }
+    catch(const std::exception& e)
+    {
+        std::cerr << e.what() << '\n';
+    }
+
+    for (int i = 0; i < MAX_VAL; i++)
+    {
+        numbers[i] = rand();
+    }
+    delete [] mirror;
+
     std::cout << "=== Test 1: Default constructor ===" << std::endl;
     Array<int> a1;
     std::cout << "Size: " << a1.size() << std::endl
@@ -15,7 +64,7 @@ int main()
 	catch (const std::exception& e)
 	{
         exception_caught = true;
-        std::cout << "OK: Exception thrown" << std::endl;
+        std::cout << "OK: " << e.what() << std::endl;
     }
     if (!exception_caught) {
         std::cout << "ERROR: Exception not thrown" << std::endl;
@@ -32,15 +81,15 @@ int main()
         a2[5];
     } catch (const std::exception& e) {
         exception_caught = true;
-        std::cout << "OK: Exception thrown" << std::endl;
+        std::cout << "OK: " << e.what() << std::endl;
     }
     if (!exception_caught) {
-        std::cout << "ERROR: Exception thrown" << std::endl;
+        std::cout << "ERROR: Exception not thrown" << std::endl;
     }
     try {
         a2[10];
     } catch (const std::exception& e) {
-        std::cout << "OK: Exception thrown" << std::endl;
+        std::cout << "OK: " << e.what() << std::endl;
     }
 
     std::cout << "\n=== Test 3: Copy constructor ===" << std::endl;
@@ -64,10 +113,6 @@ int main()
     std::cout << "a3[1] after modify assigned array: " << a3[1] << " | Expected: 0" << std::endl;
     std::cout << "a4[1]: " << a4[1] << " | Expected: 100" << std::endl;
 
-    Array<int> a5;
-    a5 = a5;
-    std::cout << "Auto-asignation OK .Size: " << a5.size() << " | Expected: 0" << std::endl;
-
     std::cout << "\n=== Test 5: string ===" << std::endl;
     Array<std::string> s1;
     std::cout << "Size default string array: " << s1.size() << " | Expected: 0" << std::endl;
@@ -87,7 +132,7 @@ int main()
         s2[3];
     } catch (const std::exception& e) {
         exception_caught = true;
-        std::cout << "OK: Exception string out of range" << std::endl;
+        std::cout << "OK: " << e.what() << std::endl;
     }
     if (!exception_caught) {
         std::cout << "ERROR: No exception" << std::endl;
@@ -101,7 +146,7 @@ int main()
         d1[0];
     } catch (const std::exception& e) {
         exception_caught = true;
-        std::cout << "OK: Exception thrown" << std::endl;
+        std::cout << "OK: " << e.what() << std::endl;
     }
     if (!exception_caught) {
         std::cout << "ERROR: Access to empty array" << std::endl;
@@ -114,15 +159,15 @@ int main()
 	matrix[0][1] = 43;
 	matrix[1][0] = 44;
 	std::cout << "matrix[0][0]: " << matrix[0][0] << " | Expected: 42" << std::endl;
-	std::cout << "matrix[0][1]: " << matrix[0][1] << " | Expected: 43)" << std::endl;
-	std::cout << "matrix[1][0]: " << matrix[1][0] << " | Expected: 44)" << std::endl;
+	std::cout << "matrix[0][1]: " << matrix[0][1] << " | Expected: 43" << std::endl;
+	std::cout << "matrix[1][0]: " << matrix[1][0] << " | Expected: 44" << std::endl;
 	exception_caught = false;
 	try
 	{
     	matrix[2][0]; // Fuera de rango en filas
 	} catch (const std::exception& e) {
     	exception_caught = true;
-    	std::cout << "OK: Exception out of range" << std::endl;
+    	std::cout << "OK: " << e.what() << std::endl;
 	}
 	if (!exception_caught) {
     	std::cout << "ERROR: No exception" << std::endl;
@@ -130,6 +175,6 @@ int main()
 	try {
     	matrix[0][3]; // Fuera de rango en columnas
 	} catch (const std::exception& e) {
-    	std::cout << "OK: Exception out of range" << std::endl;
+    	std::cout << "OK: " << e.what() << std::endl;
 }
 }

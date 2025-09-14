@@ -9,6 +9,13 @@ class	Array
 	private:
 		T*				_array;
 		unsigned int	_len;
+		class OutOfRangeException : public std::exception
+		{
+			const char* what() const throw()
+			{
+				return "Index out of range";
+			}
+		};
 	public:
 		Array() : _array(NULL), _len(0) {}
 
@@ -60,7 +67,7 @@ class	Array
 		T&	operator[](const unsigned int index) const
 		{
 			if (index >= this->_len)
-				throw std::exception();
+				throw OutOfRangeException();
 			return this->_array[index];
 		}
 
