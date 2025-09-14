@@ -57,7 +57,7 @@ class	Array
 			return *this;	
 		}
 
-		T&	operator[](const unsigned int index)
+		T&	operator[](const unsigned int index) const
 		{
 			if (index >= this->_len)
 				throw std::exception();

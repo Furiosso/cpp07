@@ -106,4 +106,30 @@ int main()
     if (!exception_caught) {
         std::cout << "ERROR: Access to empty array" << std::endl;
     }
+	std::cout << "\n=== Test 7: Matrix Array<Array<int>> ===" << std::endl;
+	Array<Array<int> > matrix(2);
+	matrix[0] = Array<int>(3);
+	matrix[1] = Array<int>(3);
+	matrix[0][0] = 42;
+	matrix[0][1] = 43;
+	matrix[1][0] = 44;
+	std::cout << "matrix[0][0]: " << matrix[0][0] << " | Expected: 42" << std::endl;
+	std::cout << "matrix[0][1]: " << matrix[0][1] << " | Expected: 43)" << std::endl;
+	std::cout << "matrix[1][0]: " << matrix[1][0] << " | Expected: 44)" << std::endl;
+	exception_caught = false;
+	try
+	{
+    	matrix[2][0]; // Fuera de rango en filas
+	} catch (const std::exception& e) {
+    	exception_caught = true;
+    	std::cout << "OK: Exception out of range" << std::endl;
+	}
+	if (!exception_caught) {
+    	std::cout << "ERROR: No exception" << std::endl;
+	}
+	try {
+    	matrix[0][3]; // Fuera de rango en columnas
+	} catch (const std::exception& e) {
+    	std::cout << "OK: Exception out of range" << std::endl;
+}
 }
