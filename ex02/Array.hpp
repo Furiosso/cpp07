@@ -27,7 +27,7 @@ class	Array
 					this->_array = NULL;
 					return ;
 				default:
-					this->_array = new T[n];
+					this->_array = new T[n]();
 			}
 		}
 
